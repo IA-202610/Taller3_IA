@@ -42,6 +42,77 @@ def crear_kb() -> KnowledgeBase:
     cartel_portuario  = Term("cartel_portuario")
 
     # === YOUR CODE HERE ===
+    kb.add_fact(Predicate("registro_fuera_del_puerto", (capitan_herrera,)))
+    kb.add_fact(Predicate("registro_fuera_del_puerto", (inspector_nova,)))
+    kb.add_fact(Predicate("manifiestos_fraudulentos", (oficial_duarte,)))
+    kb.add_fact(Predicate("sin_coartada", (oficial_duarte,)))       
+    kb.add_fact(Predicate("acceso_bodega", (marinero_pinto,)))
+    kb.add_fact(Predicate("introduce_contrabando", (marinero_pinto,)))
+    kb.add_fact(Predicate("sin_coartada", (marinero_pinto,)))
+    kb.add_fact(Predicate("mismo_cartel", (oficial_duarte, marinero_pinto)))
+    kb.add_fact(Predicate("reportado_informante", (oficial_duarte,)))
+    kb.add_fact(Predicate("reportado_informante", (marinero_pinto,)))
+    kb.add_fact(Predicate("acusa", (capitan_herrera, oficial_duarte)))
+    kb.add_fact(Predicate("declara", (oficial_duarte, marinero_pinto)))
+    kb.add_fact(Predicate("declara", (marinero_pinto, oficial_duarte)))
+    
+        # Reglas
+    x = Term("$x")
+    y = Term("$y")
+    z = Term("$z")
+    kb.add_rule(Rule(
+        head=Predicate("descartado", (x,)),
+        body=[Predicate("registro_fuera_del_puerto", (x,))]
+    ))
+    kb.add_rule(Rule(
+        head=Predicate("fraude_documental", (x,)),
+        body=[Predicate("manifiestos_fraudulentos", (x,))]
+    ))
+    kb.add_rule(Rule(
+        head=Predicate("contrabando", (x,)),
+        body=[Predicate("introduce_contrabando", (x,))]
+    ))
+    kb.add_rule(Rule(
+        head=Predicate("culpable", (x,)),
+        body=(
+            Predicate("fraude_documental", (x,)),
+            Predicate("sin_coartada", (x,))
+        )
+    ))
+    kb.add_rule(Rule(
+        head=Predicate("culpable", (x,)),
+        body=(
+            Predicate("contrabando", (x,)),
+            Predicate("sin_coartada", (x,))
+        )
+    ))
+    kb.add_rule(Rule(
+        head=Predicate("mismo_cartel", (x, y)),
+        body=[Predicate("mismo_cartel", (x, y))]
+    ))
+    kb.add_rule(Rule(
+        head=Predicate("operacion_conjunta", (x, y)),
+        body=(
+            Predicate("culpable", (x,)),
+            Predicate("culpable", (y,)),
+            Predicate("mismo_cartel", (x, y))
+        )
+    ))
+
+    kb.add_rule(Rule(
+        head=Predicate("testimonio_confiable", (x, y)),
+        body=(
+            Predicate("descartado", (x,)),
+            Predicate("acusa", (x, y))
+         )
+    ))
+    
+    kb.add_rule(Rule(
+        head=Predicate("red_activa", (x,)),
+        body=[Predicate("culpable", (x,))]
+    ))
+
+    
 
     # === END YOUR CODE ===
 
