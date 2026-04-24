@@ -100,6 +100,10 @@ def crear_kb() -> KnowledgeBase:
             Predicate("estuvo_en_lugar", (x,))
         ]
     ))
+    kb.add_rule(Rule(
+    head=Predicate("acceso_en_momento", (x,)),
+    body=[Predicate("estuvo_en_lugar", (x,))]
+    ))
 
     return kb
 

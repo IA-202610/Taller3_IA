@@ -64,8 +64,9 @@ def crear_kb() -> KnowledgeBase:
         body=[Predicate("lejos_de_escena", (x,))]
     ))
     kb.add_rule(Rule(
-        head=Predicate("testimonio_confiable", (x,)),
-        body=[Predicate("descartado", (x,))]
+        head=Predicate("testimonio_confiable", (x,y)),
+        body=[Predicate("descartado", (x,)),
+        Predicate("acusa", (x, y))]
     ))
     kb.add_rule(Rule(
         head=Predicate("culpable", (x,)),
@@ -75,7 +76,7 @@ def crear_kb() -> KnowledgeBase:
         ]
     ))
     kb.add_rule(Rule(
-        head=Predicate("encubre", (x, y)),
+        head=Predicate("encubridor", (x,)),
         body=[
             Predicate("da_coartada", (x, y)),
             Predicate("culpable", (y,))
